@@ -135,19 +135,82 @@
 
         <div id="s-visual" class="pf-block">
           <div class="pf-block__num">08 · Visual</div>
-          <h2 class="pf-block__h">Screenshot</h2>
+          <h2 class="pf-block__h">Screenshot / Demo</h2>
           <div class="pf-block__body">
-            {% if project.image %}
-              <div style="border-radius: 14px; overflow: hidden; border: 1px solid var(--pf-line);">
-                <img src="{{ project.image.url }}" alt="{{ project.image_alt|default:project.title }}">
+
+            {% if extra_media.type == "gallery" %}
+              {# HandyMan — 5-agent screenshot gallery #}
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;">
+                {% for img_path, img_label in extra_media.images %}
+                  <div style="border-radius:10px;overflow:hidden;border:1px solid var(--pf-line);">
+                    <img src="{% static img_path %}" alt="{{ img_label }}" style="width:100%;display:block;">
+                    <div style="padding:8px 12px;font-size:12px;color:var(--pf-text-mute);font-family:var(--pf-font-mono);">{{ img_label }}</div>
+                  </div>
+                {% endfor %}
               </div>
-            {% elif project.static_image %}
-              <div style="border-radius: 14px; overflow: hidden; border: 1px solid var(--pf-line);">
-                <img src="{% static project.static_image %}" alt="{{ project.image_alt|default:project.title }}">
+
+            {% elif extra_media.type == "video" %}
+              {# Personal Document Brain — looping silent Obsidian video #}
+              <div style="border-radius:14px;overflow:hidden;border:1px solid var(--pf-line);background:#0a0d12;">
+                <video autoplay muted loop playsinline style="width:100%;display:block;max-height:520px;object-fit:cover;">
+                  <source src="{% static extra_media.video %}" type="video/mp4">
+                  <p style="padding:20px;color:var(--pf-text-mute);">Your browser doesn't support video. <a href="{% static extra_media.video %}">Download the video</a>.</p>
+                </video>
+                {% if extra_media.caption %}
+                  <div style="padding:10px 16px;font-size:12px;color:var(--pf-text-mute);font-family:var(--pf-font-mono);">{{ extra_media.caption }}</div>
+                {% endif %}
               </div>
+
+            {% elif extra_media.type == "video_pdf" %}
+              {# Google AI Studio — video + PDF prompt workflow #}
+              <div style="border-radius:14px;overflow:hidden;border:1px solid var(--pf-line);background:#0a0d12;margin-bottom:20px;">
+                <video controls style="width:100%;display:block;max-height:480px;object-fit:contain;">
+                  <source src="{% static extra_media.video %}" type="video/mp4">
+                  <p style="padding:20px;color:var(--pf-text-mute);">Your browser doesn't support video. <a href="{% static extra_media.video %}">Download the video</a>.</p>
+                </video>
+                {% if extra_media.caption %}
+                  <div style="padding:10px 16px;font-size:12px;color:var(--pf-text-mute);font-family:var(--pf-font-mono);">{{ extra_media.caption }}</div>
+                {% endif %}
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:16px;border-radius:10px;border:1px solid var(--pf-line);background:var(--pf-card);">
+                <span style="font-size:28px;">📄</span>
+                <div style="flex:1;">
+                  <div style="font-weight:600;margin-bottom:4px;">Prompt Workflow Document</div>
+                  <div style="font-size:13px;color:var(--pf-text-mute);">Annotated prompt planning PDF showing the generation workflow and visual consistency strategy.</div>
+                </div>
+                <a class="pf-btn pf-btn--ghost pf-btn--sm" href="{% static extra_media.pdf %}" target="_blank" rel="noopener">{{ extra_media.pdf_label|default:"View PDF ↗" }}</a>
+              </div>
+
+            {% elif extra_media.type == "note" %}
+              {# Chatbot note about dual-project classification #}
+              <div style="padding:16px;border-radius:10px;border:1px solid var(--pf-accent);background:rgba(0,188,255,0.05);margin-bottom:20px;">
+                <div style="font-size:13px;color:var(--pf-text-mute);">{{ extra_media.note }}</div>
+              </div>
+              {% if project.image %}
+                <div style="border-radius:14px;overflow:hidden;border:1px solid var(--pf-line);">
+                  <img src="{{ project.image.url }}" alt="{{ project.image_alt|default:project.title }}">
+                </div>
+              {% elif project.static_image %}
+                <div style="border-radius:14px;overflow:hidden;border:1px solid var(--pf-line);">
+                  <img src="{% static project.static_image %}" alt="{{ project.image_alt|default:project.title }}">
+                </div>
+              {% endif %}
+
             {% else %}
-              <p><em>Add a screenshot via Django admin or drop one in <span class="pf-mono">/media/projects/</span>.</em></p>
+              {# Default: single image #}
+              {% if project.image %}
+                <div style="border-radius:14px;overflow:hidden;border:1px solid var(--pf-line);">
+                  <img src="{{ project.image.url }}" alt="{{ project.image_alt|default:project.title }}">
+                </div>
+              {% elif project.static_image %}
+                <div style="border-radius:14px;overflow:hidden;border:1px solid var(--pf-line);">
+                  <img src="{% static project.static_image %}" alt="{{ project.image_alt|default:project.title }}">
+                </div>
+              {% else %}
+                <p><em>Add a screenshot via Django admin or drop one in <span class="pf-mono">/media/projects/</span>.</em></p>
+              {% endif %}
             {% endif %}
+
           </div>
         </div>
 

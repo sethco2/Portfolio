@@ -23,6 +23,7 @@ class Project(models.Model):
         AI_STUDIO = "ai_studio", "Google AI Studio Media"
         ML = "ml", "Machine Learning (scikit-learn)"
         DJANGO = "django", "Django Web App"
+        PERSONAL = "personal", "Personal Build"
         OTHER = "other", "Other"
 
     title = models.CharField(max_length=120)

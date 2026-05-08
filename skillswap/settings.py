@@ -166,7 +166,10 @@ EMAIL_USE_TLS = _env_bool("EMAIL_USE_TLS", default=True)
 DEFAULT_FROM_EMAIL = os.environ.get(
     "DEFAULT_FROM_EMAIL", "Seth Grant Portfolio <noreply@example.com>"
 )
-CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "sethgrant2003@gmail.com")
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "sethngrant2003@gmail.com")
+
+# --- Chatbot (Ask Seth) ---------------------------------------------------
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 
 
 # --- Production hardening --------------------------------------------------

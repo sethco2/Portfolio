@@ -12,4 +12,5 @@ urlpatterns = [
     path("skills/", views.skills, name="skills"),
     path("resume/", views.resume, name="resume"),
     path("contact/", views.contact, name="contact"),
+    path("chat/", views.chatbot, name="chatbot"),
 ]

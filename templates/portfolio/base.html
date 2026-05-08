@@ -88,6 +88,113 @@
       if (io) document.querySelectorAll('.pf-reveal').forEach(function (n) { io.observe(n); });
     })();
   </script>
+
+  {# ---- Ask Seth Chatbot Widget ---- #}
+  <style>
+    .pf-chat-fab{position:fixed;bottom:28px;right:28px;z-index:9000;background:var(--pf-accent,#00bcff);color:#000;border:none;border-radius:50px;padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 20px rgba(0,188,255,.35);display:flex;align-items:center;gap:8px;transition:transform .15s,box-shadow .15s;}
+    .pf-chat-fab:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(0,188,255,.45);}
+    .pf-chat-panel{position:fixed;bottom:90px;right:28px;z-index:9000;width:340px;max-width:calc(100vw - 40px);background:#0f1318;border:1px solid #1e2530;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.5);display:none;flex-direction:column;overflow:hidden;}
+    .pf-chat-panel.pf-chat-panel--open{display:flex;}
+    .pf-chat-header{background:#0a0d12;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1e2530;}
+    .pf-chat-header__title{font-size:14px;font-weight:600;color:#fff;}
+    .pf-chat-header__sub{font-size:11px;color:#5a6478;margin-top:2px;}
+    .pf-chat-close{background:none;border:none;color:#5a6478;font-size:20px;cursor:pointer;padding:0 4px;line-height:1;}
+    .pf-chat-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;max-height:320px;min-height:80px;}
+    .pf-chat-msg{max-width:88%;padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.5;}
+    .pf-chat-msg--bot{background:#1a2033;color:#d0d8e8;align-self:flex-start;border-bottom-left-radius:4px;}
+    .pf-chat-msg--user{background:var(--pf-accent,#00bcff);color:#000;align-self:flex-end;border-bottom-right-radius:4px;}
+    .pf-chat-msg--typing{color:#5a6478;font-style:italic;}
+    .pf-chat-form{display:flex;gap:0;border-top:1px solid #1e2530;}
+    .pf-chat-input{flex:1;background:#0a0d12;border:none;padding:12px 14px;color:#d0d8e8;font-size:13px;outline:none;font-family:inherit;}
+    .pf-chat-input::placeholder{color:#3a4455;}
+    .pf-chat-send{background:var(--pf-accent,#00bcff);color:#000;border:none;padding:0 16px;font-weight:600;font-size:13px;cursor:pointer;}
+    .pf-chat-send:hover{opacity:.9;}
+    .pf-chat-disclaimer{padding:6px 14px 10px;font-size:10px;color:#3a4455;text-align:center;}
+  </style>
+
+  <button class="pf-chat-fab" id="pf-chat-fab" aria-label="Ask Seth's AI">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Ask Seth's AI
+  </button>
+
+  <div class="pf-chat-panel" id="pf-chat-panel" role="dialog" aria-label="Ask Seth chatbot">
+    <div class="pf-chat-header">
+      <div>
+        <div class="pf-chat-header__title">Ask Seth's AI</div>
+        <div class="pf-chat-header__sub">Answers questions about Seth, projects, and skills</div>
+      </div>
+      <button class="pf-chat-close" id="pf-chat-close" aria-label="Close chat">×</button>
+    </div>
+    <div class="pf-chat-messages" id="pf-chat-messages">
+      <div class="pf-chat-msg pf-chat-msg--bot">
+        Hi! I'm Seth's AI assistant. Ask me about his projects, background, skills, or how to reach him.
+      </div>
+    </div>
+    <form class="pf-chat-form" id="pf-chat-form">
+      {% csrf_token %}
+      <input class="pf-chat-input" id="pf-chat-input" type="text" placeholder="Ask about Seth's work…" autocomplete="off" maxlength="500">
+      <button class="pf-chat-send" type="submit">Send</button>
+    </form>
+    <div class="pf-chat-disclaimer">Answers based on portfolio information only.</div>
+  </div>
+
+  <script>
+  (function () {
+    var fab = document.getElementById('pf-chat-fab');
+    var panel = document.getElementById('pf-chat-panel');
+    var closeBtn = document.getElementById('pf-chat-close');
+    var form = document.getElementById('pf-chat-form');
+    var input = document.getElementById('pf-chat-input');
+    var msgs = document.getElementById('pf-chat-messages');
+    var chatUrl = '{% url "portfolio:chatbot" %}';
+
+    function openChat() { panel.classList.add('pf-chat-panel--open'); input.focus(); }
+    function closeChat() { panel.classList.remove('pf-chat-panel--open'); }
+
+    fab.addEventListener('click', function () {
+      panel.classList.contains('pf-chat-panel--open') ? closeChat() : openChat();
+    });
+    closeBtn.addEventListener('click', closeChat);
+
+    function addMsg(text, cls) {
+      var el = document.createElement('div');
+      el.className = 'pf-chat-msg ' + cls;
+      el.textContent = text;
+      msgs.appendChild(el);
+      msgs.scrollTop = msgs.scrollHeight;
+      return el;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var msg = input.value.trim();
+      if (!msg) return;
+      addMsg(msg, 'pf-chat-msg--user');
+      input.value = '';
+      var typing = addMsg('Thinking…', 'pf-chat-msg--bot pf-chat-msg--typing');
+
+      var csrfEl = form.querySelector('[name=csrfmiddlewaretoken]');
+      fetch(chatUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfEl ? csrfEl.value : '',
+        },
+        body: JSON.stringify({ message: msg }),
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        typing.remove();
+        addMsg(data.reply || 'No response.', 'pf-chat-msg--bot');
+      })
+      .catch(function () {
+        typing.remove();
+        addMsg('Connection error. Try the Contact page.', 'pf-chat-msg--bot');
+      });
+    });
+  })();
+  </script>
+
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>
