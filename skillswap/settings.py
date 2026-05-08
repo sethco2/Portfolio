@@ -52,10 +52,6 @@ INSTALLED_APPS = [
 
     # Portfolio is the front door of the site.
     "portfolio",
-
-    # Campus SkillSwap (existing class project, featured as live demo).
-    "skills",
-    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -154,11 +150,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # --- SkillSwap auth redirects ---------------------------------------------
-LOGIN_REDIRECT_URL = "dashboard"
-LOGOUT_REDIRECT_URL = "portfolio:home"
-LOGIN_URL = "login"
-
-
 # --- Email (contact form) --------------------------------------------------
 # Defaults to console backend in dev; set EMAIL_HOST + creds in production.
 EMAIL_BACKEND = os.environ.get(
