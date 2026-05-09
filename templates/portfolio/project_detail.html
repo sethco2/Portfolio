@@ -20,9 +20,45 @@
       {% endif %}
     </div>
 
-    <div class="pf-project__hero-img">
-      {% if project.image %}
+    <div class="pf-project__hero-img{% if extra_media.type == 'gallery' %} pf-project__hero-img--gallery{% endif %}{% if extra_media.type == 'video' or extra_media.type == 'video_pdf' or extra_media.type == 'video_app_preview' %} pf-project__hero-img--video pf-project__hero-img--{{ project.slug }}{% endif %}">
+      {% if extra_media.type == "gallery" %}
+        <div class="pf-gallery" data-pf-gallery>
+          <div class="pf-gallery__tabs" aria-label="HandyMan project screenshots">
+            {% for img_path, img_label in extra_media.images %}
+              <button type="button" class="{% if forloop.first %}is-active{% endif %}" data-pf-gallery-tab="{{ forloop.counter0 }}">{{ forloop.counter }}</button>
+            {% endfor %}
+          </div>
+          <div class="pf-gallery__stage">
+            {% for img_path, img_label in extra_media.images %}
+              <figure class="pf-gallery__slide{% if forloop.first %} is-active{% endif %}" data-pf-gallery-slide="{{ forloop.counter0 }}">
+                <img src="{% static img_path %}" alt="{{ img_label }}">
+                <figcaption>{{ img_label }}</figcaption>
+              </figure>
+            {% endfor %}
+          </div>
+        </div>
+      {% elif extra_media.type == "video" %}
+        <video autoplay muted loop playsinline preload="metadata" aria-label="{{ extra_media.caption|default:project.title }}">
+          <source src="{% static extra_media.video %}" type="video/mp4">
+        </video>
+      {% elif extra_media.type == "video_pdf" %}
+        <video autoplay muted loop playsinline preload="metadata" aria-label="{{ extra_media.caption|default:project.title }}">
+          <source src="{% static extra_media.video %}" type="video/mp4">
+        </video>
+      {% elif extra_media.type == "app_preview" %}
+        {% include "portfolio/partials/app_preview.html" with variant=extra_media.variant %}
+      {% elif extra_media.type == "video_app_preview" %}
+        <video autoplay muted loop playsinline preload="metadata" aria-label="{{ project.image_alt|default:project.title }}">
+          <source src="{% static extra_media.video %}" type="video/mp4">
+        </video>
+      {% elif project.slug == "scikit-learn-predictive-model" %}
+        {% include "portfolio/partials/ml_preview.html" %}
+      {% elif project.image %}
         <img src="{{ project.image.url }}" alt="{{ project.image_alt|default:project.title }}">
+      {% elif project.static_media_is_video %}
+        <video autoplay muted loop playsinline preload="metadata" aria-label="{{ project.image_alt|default:project.title }}">
+          <source src="{% static project.static_image %}" type="video/mp4">
+        </video>
       {% elif project.static_image %}
         <img src="{% static project.static_image %}" alt="{{ project.image_alt|default:project.title }}">
       {% else %}
@@ -152,7 +188,7 @@
             {% elif extra_media.type == "video" %}
               {# Personal Document Brain — looping silent Obsidian video #}
               <div style="border-radius:14px;overflow:hidden;border:1px solid var(--pf-line);background:#0a0d12;">
-                <video autoplay muted loop playsinline style="width:100%;display:block;max-height:520px;object-fit:cover;">
+                <video autoplay muted loop playsinline preload="metadata" style="width:100%;display:block;max-height:520px;object-fit:cover;">
                   <source src="{% static extra_media.video %}" type="video/mp4">
                   <p style="padding:20px;color:var(--pf-text-mute);">Your browser doesn't support video. <a href="{% static extra_media.video %}">Download the video</a>.</p>
                 </video>
@@ -164,7 +200,7 @@
             {% elif extra_media.type == "video_pdf" %}
               {# Google AI Studio — video + PDF prompt workflow #}
               <div style="border-radius:14px;overflow:hidden;border:1px solid var(--pf-line);background:#0a0d12;margin-bottom:20px;">
-                <video controls style="width:100%;display:block;max-height:480px;object-fit:contain;">
+                <video autoplay muted loop playsinline preload="metadata" controls style="width:100%;display:block;max-height:480px;object-fit:contain;">
                   <source src="{% static extra_media.video %}" type="video/mp4">
                   <p style="padding:20px;color:var(--pf-text-mute);">Your browser doesn't support video. <a href="{% static extra_media.video %}">Download the video</a>.</p>
                 </video>
@@ -179,6 +215,21 @@
                   <div style="font-size:13px;color:var(--pf-text-mute);">Annotated prompt planning PDF showing the generation workflow and visual consistency strategy.</div>
                 </div>
                 <a class="pf-btn pf-btn--ghost pf-btn--sm" href="{% static extra_media.pdf %}" target="_blank" rel="noopener">{{ extra_media.pdf_label|default:"View PDF ↗" }}</a>
+              </div>
+
+            {% elif extra_media.type == "app_preview" %}
+              <div style="border-radius:14px;overflow:hidden;border:1px solid var(--pf-line);background:#0a0d12;margin-bottom:20px;">
+                {% include "portfolio/partials/app_preview.html" with variant=extra_media.variant %}
+              </div>
+
+            {% elif extra_media.type == "video_app_preview" %}
+              <div style="border-radius:14px;overflow:hidden;border:1px solid var(--pf-line);background:#0a0d12;margin-bottom:20px;">
+                <video autoplay muted loop playsinline preload="metadata" controls style="width:100%;display:block;max-height:520px;object-fit:contain;">
+                  <source src="{% static extra_media.video %}" type="video/mp4">
+                </video>
+              </div>
+              <div style="border-radius:14px;overflow:hidden;border:1px solid var(--pf-line);background:#0a0d12;margin-bottom:20px;">
+                {% include "portfolio/partials/app_preview.html" with variant=extra_media.variant %}
               </div>
 
             {% elif extra_media.type == "note" %}
@@ -233,4 +284,38 @@
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  (function () {
+    document.querySelectorAll('[data-pf-gallery]').forEach(function (gallery) {
+      var tabs = gallery.querySelectorAll('[data-pf-gallery-tab]');
+      var slides = gallery.querySelectorAll('[data-pf-gallery-slide]');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var index = tab.getAttribute('data-pf-gallery-tab');
+          tabs.forEach(function (item) { item.classList.toggle('is-active', item === tab); });
+          slides.forEach(function (slide) {
+            slide.classList.toggle('is-active', slide.getAttribute('data-pf-gallery-slide') === index);
+          });
+        });
+      });
+    });
+
+    document.querySelectorAll('.pf-app-preview, .pf-ml-preview').forEach(function (preview) {
+      var tabs = preview.querySelectorAll('[data-pf-preview-tab]');
+      var panels = preview.querySelectorAll('[data-pf-preview-panel]');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var target = tab.getAttribute('data-pf-preview-tab');
+          tabs.forEach(function (item) { item.classList.toggle('is-active', item === tab); });
+          panels.forEach(function (panel) {
+            panel.classList.toggle('is-active', panel.getAttribute('data-pf-preview-panel') === target);
+          });
+        });
+      });
+    });
+  })();
+</script>
 {% endblock %}

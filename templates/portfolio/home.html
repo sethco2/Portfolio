@@ -41,9 +41,19 @@
     <div class="pf-grid" style="margin-top: 40px;">
       {% for p in featured_projects %}
         <a class="pf-card pf-reveal" href="{{ p.get_absolute_url }}">
-          <div class="pf-card__media">
-            {% if p.image %}
+          <div class="pf-card__media{% if p.static_media_is_video %} pf-card__media--video pf-card__media--{{ p.slug }}{% endif %}">
+            {% if p.slug == "scikit-learn-predictive-model" %}
+              {% include "portfolio/partials/ml_preview.html" with compact=True %}
+            {% elif p.image %}
               <img src="{{ p.image.url }}" alt="{{ p.image_alt|default:p.title }}">
+            {% elif p.static_media_is_video %}
+              <video autoplay muted loop playsinline preload="metadata" aria-label="{{ p.image_alt|default:p.title }}">
+                <source src="{% static p.static_image %}" type="video/mp4">
+              </video>
+            {% elif p.slug == "campus-skillswap" %}
+              {% include "portfolio/partials/app_preview.html" with variant="skillswap" compact=True %}
+            {% elif p.slug == "learning-log" %}
+              {% include "portfolio/partials/app_preview.html" with variant="learning-log" compact=True %}
             {% elif p.static_image %}
               <img src="{% static p.static_image %}" alt="{{ p.image_alt|default:p.title }}">
             {% else %}

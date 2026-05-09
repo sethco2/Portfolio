@@ -1,0 +1,85 @@
+{% if variant == "skillswap" %}
+<div class="pf-app-preview pf-app-preview--skillswap{% if compact %} pf-app-preview--compact{% endif %}" aria-label="Campus SkillSwap app preview">
+  <div class="pf-app-preview__top">
+    <span></span><span></span><span></span>
+    <strong>Campus SkillSwap</strong>
+  </div>
+  <div class="pf-app-preview__body">
+    <div class="pf-app-preview__sidebar">
+      {% if compact %}
+        <span class="is-active">Browse</span>
+        <span>My skills</span>
+        <span>Requests</span>
+      {% else %}
+        <button class="is-active" type="button" data-pf-preview-tab="browse">Browse</button>
+        <button type="button" data-pf-preview-tab="mine">My skills</button>
+        <button type="button" data-pf-preview-tab="requests">Requests</button>
+      {% endif %}
+    </div>
+    <div class="pf-app-preview__main">
+      <div class="pf-app-preview__search"><span></span> Search Python, design, Excel...</div>
+      <div class="pf-app-preview__panel is-active" data-pf-preview-panel="browse">
+        <div class="pf-app-preview__tiles">
+          <div><b>Python tutoring</b><small>3 students available</small></div>
+          <div><b>Resume review</b><small>Business school mentors</small></div>
+          <div><b>Canva design</b><small>Swap for spreadsheet help</small></div>
+        </div>
+      </div>
+      <div class="pf-app-preview__panel" data-pf-preview-panel="mine">
+        <div class="pf-app-preview__tiles">
+          <div><b>AI prompting</b><small>Available evenings</small></div>
+          <div><b>Django basics</b><small>Open to skill trades</small></div>
+        </div>
+      </div>
+      <div class="pf-app-preview__panel" data-pf-preview-panel="requests">
+        <div class="pf-app-preview__tiles">
+          <div><b>Need Excel help</b><small>Finance model cleanup</small></div>
+          <div><b>Looking for Figma</b><small>Landing page wireframe</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% elif variant == "learning-log" %}
+<div class="pf-app-preview pf-app-preview--learning{% if compact %} pf-app-preview--compact{% endif %}" aria-label="Learning Log app preview">
+  <div class="pf-app-preview__top">
+    <span></span><span></span><span></span>
+    <strong>Learning Log</strong>
+  </div>
+  <div class="pf-app-preview__body">
+    <div class="pf-app-preview__sidebar">
+      {% if compact %}
+        <span class="is-active">Topics</span>
+        <span>Entries</span>
+        <span>Account</span>
+      {% else %}
+        <button class="is-active" type="button" data-pf-preview-tab="topics">Topics</button>
+        <button type="button" data-pf-preview-tab="entries">Entries</button>
+        <button type="button" data-pf-preview-tab="account">Account</button>
+      {% endif %}
+    </div>
+    <div class="pf-app-preview__main">
+      <div class="pf-app-preview__search"><span></span> Track what I am learning...</div>
+      <div class="pf-app-preview__panel is-active" data-pf-preview-panel="topics">
+        <div class="pf-app-preview__timeline">
+          <div><b>Django routing</b><small>URL patterns and views</small></div>
+          <div><b>Templates</b><small>Reusable page structure</small></div>
+          <div><b>Auth flow</b><small>Login and protected pages</small></div>
+        </div>
+      </div>
+      <div class="pf-app-preview__panel" data-pf-preview-panel="entries">
+        <div class="pf-app-preview__timeline">
+          <div><b>Built topic detail page</b><small>Linked topics to their entries</small></div>
+          <div><b>Added protected routes</b><small>Only owners can edit entries</small></div>
+        </div>
+      </div>
+      <div class="pf-app-preview__panel" data-pf-preview-panel="account">
+        <div class="pf-app-preview__tiles">
+          <div><b>Logged in as seth</b><small>Private learning dashboard</small></div>
+          <div><b>New entry form</b><small>Fast capture while learning</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

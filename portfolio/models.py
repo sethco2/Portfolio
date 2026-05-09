@@ -82,6 +82,10 @@ class Project(models.Model):
         return [t.strip() for t in self.tools_used.split(",") if t.strip()]
 
     @property
+    def static_media_is_video(self) -> bool:
+        return self.static_image.lower().endswith((".mp4", ".webm", ".mov"))
+
+    @property
     def features_list(self) -> list[str]:
         return [
             line.strip().lstrip("-•").strip()

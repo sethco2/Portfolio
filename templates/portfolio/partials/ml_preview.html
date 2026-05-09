@@ -1,0 +1,44 @@
+<div class="pf-ml-preview{% if compact %} pf-ml-preview--compact{% endif %}" aria-label="scikit-learn model preview">
+  <div class="pf-ml-preview__tabs">
+    {% if compact %}
+      <span class="is-active">Iris</span><span>Digits</span><span>Diabetes</span>
+    {% else %}
+      <button class="is-active" type="button" data-pf-preview-tab="iris">Iris</button>
+      <button type="button" data-pf-preview-tab="digits">Digits</button>
+      <button type="button" data-pf-preview-tab="diabetes">Diabetes</button>
+    {% endif %}
+  </div>
+  <div class="pf-ml-preview__panel is-active" data-pf-preview-panel="iris">
+    <div class="pf-ml-preview__chart">
+      <span style="height:42%"></span><span style="height:68%"></span><span style="height:35%"></span>
+      <span style="height:82%"></span><span style="height:58%"></span><span style="height:74%"></span>
+    </div>
+    <div class="pf-ml-preview__matrix">
+      <span class="is-hot"></span><span></span><span></span>
+      <span></span><span class="is-hot"></span><span></span>
+      <span></span><span></span><span class="is-hot"></span>
+    </div>
+  </div>
+  <div class="pf-ml-preview__panel" data-pf-preview-panel="digits">
+    <div class="pf-digit-grid">
+      <span>3</span><span>8</span><span>1</span><span>4</span><span>9</span><span>0</span>
+    </div>
+    <div class="pf-ml-preview__matrix">
+      <span class="is-hot"></span><span></span><span></span>
+      <span></span><span class="is-hot"></span><span></span>
+      <span></span><span></span><span class="is-hot"></span>
+    </div>
+  </div>
+  <div class="pf-ml-preview__panel" data-pf-preview-panel="diabetes">
+    <div class="pf-regression-preview">
+      <i style="left:12%;bottom:28%"></i><i style="left:24%;bottom:34%"></i><i style="left:36%;bottom:42%"></i>
+      <i style="left:52%;bottom:47%"></i><i style="left:68%;bottom:56%"></i><i style="left:82%;bottom:63%"></i>
+      <b></b>
+    </div>
+  </div>
+  <div class="pf-ml-preview__code">
+    <span>fit(X_train, y_train)</span>
+    <span>predict(X_test)</span>
+    <span>confusion_matrix()</span>
+  </div>
+</div>

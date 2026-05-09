@@ -36,6 +36,16 @@ _EXTRA_MEDIA = {
         "pdf_label": "View Prompt Workflow PDF",
         "caption": "AI-generated media with consistent visual language",
     },
+    "campus-skillswap": {
+        "type": "video_app_preview",
+        "video": "media/campus-skillswap-demo.mp4",
+        "variant": "skillswap",
+    },
+    "learning-log": {
+        "type": "video_app_preview",
+        "video": "media/learning-log-demo.mp4",
+        "variant": "learning-log",
+    },
     "conversational-chatbot": {
         "type": "note",
         "note": (
@@ -63,7 +73,7 @@ def about(request):
 
 
 def projects_index(request):
-    projects = Project.objects.all()
+    projects = Project.objects.exclude(slug="conversational-chatbot")
     builds = PersonalBuild.objects.all()
     return render(request, "portfolio/projects_index.html", {
         "projects": projects,
