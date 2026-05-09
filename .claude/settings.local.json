@@ -52,7 +52,14 @@
       "Bash(du -h static/media/obsidian-brain.mp4 static/media/google-ai-studio-video.mp4 static/media/Seth_Grant_Resume.pdf)",
       "Bash(ls -lh static/media/*.mp4 static/media/*.pdf)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8000/)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill /PID 45080 /F)",
+      "Bash(taskkill /PID 31528 /F)",
+      "Bash(taskkill /PID 46760 /F)",
+      "Bash(taskkill /PID 43280 /F)",
+      "Bash(taskkill /PID 42640 /F)"
     ]
   }
 }
