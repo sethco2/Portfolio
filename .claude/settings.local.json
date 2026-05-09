@@ -27,7 +27,32 @@
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://127.0.0.1:8000/skills/)",
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://127.0.0.1:8000/about/)",
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://127.0.0.1:8000/resume/)",
-      "Bash(curl -s http://127.0.0.1:8000/contact/)"
+      "Bash(curl -s http://127.0.0.1:8000/contact/)",
+      "Bash(cp \"C:/Users/sethn/OneDrive/Desktop/Portfolio Project/Agent Comms.png\" static/media/agent-comms.png)",
+      "Bash(cp \"C:/Users/sethn/OneDrive/Desktop/Portfolio Project/Agent Intake.png\" static/media/agent-intake.png)",
+      "Bash(cp \"C:/Users/sethn/OneDrive/Desktop/Portfolio Project/Agent Orchestrator.png\" static/media/agent-orchestrator.png)",
+      "Bash(cp \"C:/Users/sethn/OneDrive/Desktop/Portfolio Project/Agent Pricing.png\" static/media/agent-pricing.png)",
+      "Bash(cp \"C:/Users/sethn/OneDrive/Desktop/Portfolio Project/Agent Scheduling.png\" static/media/agent-scheduling.png)",
+      "Bash(cp \"C:/Users/sethn/OneDrive/Desktop/Portfolio Project/Obsidian Brain.mp4\" static/media/obsidian-brain.mp4)",
+      "Bash(cp \"C:/Users/sethn/OneDrive/Desktop/Portfolio Project/Feb_18__2245_24s_202602182252_w5uno.mp4\" static/media/google-ai-studio-video.mp4)",
+      "Bash(cp \"C:/Users/sethn/OneDrive/Desktop/Portfolio Project/annotated-IngredientsToVideo%20-%20Mario.pdf\" \"static/media/google-ai-studio-prompts.pdf\")",
+      "Bash(cp \"C:/Users/sethn/OneDrive/Desktop/Portfolio Project/Head Shot.jpg\" static/media/headshot.jpg)",
+      "Bash(cp \"C:/Users/sethn/OneDrive/Desktop/Portfolio Project/Seth_Grant_Resume.pdf\" static/media/Seth_Grant_Resume.pdf)",
+      "Bash(git show *)",
+      "Bash(python manage.py shell -c ' *)",
+      "Bash(pip install *)",
+      "Bash(python -c \"import google.generativeai; print\\('google-generativeai OK'\\)\")",
+      "Bash(python *)",
+      "Bash(curl -s http://127.0.0.1:8000/)",
+      "Bash(curl -s http://127.0.0.1:8000/projects/)",
+      "Bash(kill %1)",
+      "Bash(curl -s http://127.0.0.1:8000/projects/handyman-pricing-agent/)",
+      "Bash(curl -s http://127.0.0.1:8000/chat/ -X POST -H 'Content-Type: application/json' -d '{\"message\":\"test\"}')",
+      "Bash(rm -f home_test.txt)",
+      "Bash(du -h static/media/obsidian-brain.mp4 static/media/google-ai-studio-video.mp4 static/media/Seth_Grant_Resume.pdf)",
+      "Bash(ls -lh static/media/*.mp4 static/media/*.pdf)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
